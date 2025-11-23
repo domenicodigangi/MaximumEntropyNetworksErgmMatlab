@@ -21,9 +21,9 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 %       Maximum Entropy Network Reconstruction (August 3, 2015). 
 %       Available at SSRN: http://ssrn.com/abstract=2639178 
 %
-% The estimation requires the Max_entr_nets_ensembles package of witch this
+% The estimation requires the Max_entr_nets_ensembles package of which this
 % function is only one component. In particular the Max_Entr_Nets function
-% is needed, as weel as  at least one BIPARTITE network model, that needs
+% is needed, as well as at least one BIPARTITE network model, that needs
 % to be in the models folder.
 
 % INPUT:
@@ -45,8 +45,8 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 %                                       . Using the MECAPM model described
 %                                       in [3]
 %           mode = 'ESTIMATE-LIST' ->   Print a list of the models
-%                                       available for the estimation from 
-%                                       partial informaiton
+%                                       available for the estimation from
+%                                       partial information
 %           mode = 'ESTIMATE-BIP***'->  Substituting *** with the name of a
 %                                       model available, i.e.
 %                                       'ESTIMATE-BIPWCM' returnns the
@@ -82,7 +82,7 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 %                       to the first row of the adjacency matrix.
 %
 %       shock-->         shock needs to be a ROW vector
-%                       of real numbers between 0 and 1 that indicates the entity of
+%                       of real numbers between 0 and 1 that indicates the extent of
 %                       the initial shock that triggers the vulnerable
 %                       banks dynamics described in [1]. If not provided a
 %                       uniform
@@ -126,7 +126,7 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 if strcmpi(mode,'REAL')
     % Vulnerable banks when the network is available
         
-        %In order to compute the "real" quantities wee need to know the 
+        %In order to compute the "real" quantities we need to know the 
         % weighted adjacency matrix a.k.a. matrix of expositions
         X = input_data;
         n_assets = length(X(1,:));
@@ -173,7 +173,7 @@ elseif strcmpi(mode,'REAL_THESIS')
     % in this version we compute the W matrix from X_input and then obtain
     % X as W*sizes_input
         
-        %In order to compute the "real" quantities wee need to know the 
+        %In order to compute the "real" quantities we need to know the 
         % weighted adjacency matrix a.k.a. matrix of expositions
         X = input_data;
         n_assets = length(X(1,:));
@@ -226,7 +226,7 @@ elseif strcmpi(mode,'REAL_THESIS')
 elseif strcmpi(mode,'REAL-GREEN')
     % Vulnerable banks when the network is available
         
-        %In order to compute the "real" quantities wee need to know the 
+        %In order to compute the "real" quantities we need to know the 
         % weighted adjacency matrix a.k.a. matrix of expositions
         X = input_data;
         n_assets = length(X(1,:));

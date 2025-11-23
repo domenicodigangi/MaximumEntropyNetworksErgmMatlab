@@ -18,7 +18,7 @@ switch upper(method)
          indata{1,2} = k_col;
          
        
-     %Return the strenght sequences
+     %Return the strength sequences
      case {'BIPWNB', 'BIPWCM','MECAPM','PPCAPM','BIPWMB'}  
      
          s_row = sum(X,2);
@@ -50,7 +50,7 @@ switch upper(method)
          indata{1,2} = s_col;
          indata{1,3} = L;
          
-    % return strenght and degree sequences
+    % return strength and degree sequences
     case {'EMECAPM','BIPECM'}
          X_bin = logical(X);
          s_row = sum(X,2);

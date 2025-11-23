@@ -1,0 +1,54 @@
+# MATLAB temporary files
+*.asv
+*.m~
+
+# MATLAB autosave files
+*.autosave
+
+# MATLAB compiled files
+*.mex*
+*.p
+
+# MATLAB profiler output
+profile_results/
+
+# Simulink files
+*.slxc
+slprj/
+
+# Session info
+octave-workspace
+
+# Code generation folders
+codegen/
+
+# Build artifacts
+*.o
+*.obj
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Editor backup files
+*~
+*.swp
+*.swo
+*.bak
+
+# IDE-specific files
+.idea/
+*.iml
+.vscode/
+
+# Data and results (optional - uncomment if needed)
+# *.mat
+# *.csv
+# results/
+# data/

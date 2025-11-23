@@ -24,7 +24,7 @@
 %                                               Data needed: degree sequences.
 
 
-%                           == BIPWCM      ->   Bipartite Weigthed Configuration 
+%                           == BIPWCM      ->   Bipartite Weighted Configuration 
 %                                               Model: fixed strength
 %                                               sequences. Data
 %                                               needed:strength sequences.
@@ -53,7 +53,7 @@
 %
 %       in_data  ---->  The input data is a  cell array of columns. In
 %                       particular, the first column represents the
-%                       strenghts(or degrees) of the rows (of the adjacenct matrix), the second
+%                       strengths (or degrees) of the rows (of the adjacent matrix), the second
 %                       the strengths of the columns and any additional
 %                       sequence of constraints is added as a new entry in
 %                       the cell array

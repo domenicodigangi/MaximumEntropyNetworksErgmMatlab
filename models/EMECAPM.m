@@ -20,7 +20,7 @@ function model_struct =  EMECAPM(in_data,precision)
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers
-%                           to informations, funcitons or options specific
+%                           to information, functions or options specific
 %                           for the particular model. 
 
 %   To be called only at the beginning of the main script Max_Entr_Nets
@@ -166,7 +166,7 @@ model_struct.opt.par_store = z_start;
         fun_den = @(x,y)((x*y').*X_c - (x*y') +  sqrt( ((x*y').^2).* (X_c -1).^2 + 4*X_c.*(x*y')  )  ); 
         %Expected binary matrix from a psi gamma and X_c
        % fun_exp_bin = @(x,y)( (x*y')./(1-x*y') .* (2*X_c./fun_den(x,y) -1) ); 
-        %phi parameter as funciton of psi gamma and X_c
+        %phi parameter as function of psi gamma and X_c
         fun_phi = @(x,y)( (2*X_c - fun_den(x,y))./(2*X_c .*(1 -(x*y') ))   );
          
         % import the starting point
