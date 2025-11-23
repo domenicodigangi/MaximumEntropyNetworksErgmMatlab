@@ -1,9 +1,5 @@
 function model_struct = DCBIPWCM(in_data,precision)
 
-%%%%%%%%%% Progress: funziona bene. Rimane da capire l'effettiva efficienza
-%%%%%%%%%% dello starting point utilizzato
-
-      
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:
@@ -19,7 +15,7 @@ function model_struct = DCBIPWCM(in_data,precision)
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers
-%                           to informations, funcitons or options specific
+%                           to information, functions or options specific
 %                           for the particular model. 
 
 %   To be called only at the beginning of the main script Max_Entr_Nets

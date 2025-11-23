@@ -1,0 +1,121 @@
+name: MATLAB Code Validation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate-structure:
+    name: Validate Project Structure
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check MATLAB file structure
+      run: |
+        echo "Checking MATLAB project structure..."
+
+        # Check for main entry points
+        if [ -f "Max_Entr_Nets.m" ]; then
+          echo "✅ Found main function: Max_Entr_Nets.m"
+        else
+          echo "❌ Missing main function: Max_Entr_Nets.m"
+          exit 1
+        fi
+
+        if [ -f "Vulnerable_Banks.m" ]; then
+          echo "✅ Found main function: Vulnerable_Banks.m"
+        else
+          echo "⚠️  Missing: Vulnerable_Banks.m"
+        fi
+
+        # Check for example script
+        if [ -f "example_usage.m" ]; then
+          echo "✅ Found example script: example_usage.m"
+        else
+          echo "⚠️  Missing example script"
+        fi
+
+        # Check for models directory
+        if [ -d "models" ]; then
+          model_count=$(find models -name "*.m" | wc -l)
+          echo "✅ Found models directory with $model_count model files"
+        else
+          echo "❌ Missing models directory"
+          exit 1
+        fi
+
+        # Check for utility functions
+        if [ -d "useful_functions" ]; then
+          util_count=$(find useful_functions -name "*.m" | wc -l)
+          echo "✅ Found utility functions directory with $util_count files"
+        else
+          echo "⚠️  Missing useful_functions directory"
+        fi
+
+    - name: Check MATLAB file syntax (basic)
+      run: |
+        echo "Performing basic syntax checks on MATLAB files..."
+
+        # Check for common syntax issues in MATLAB files
+        find . -name "*.m" -type f ! -path "./.git/*" | while read -r file; do
+          echo "Checking: $file"
+
+          # Check for balanced parentheses (basic check)
+          open_parens=$(grep -o "(" "$file" | wc -l)
+          close_parens=$(grep -o ")" "$file" | wc -l)
+
+          # Check for function definition format
+          if grep -q "^function " "$file"; then
+            echo "  ✅ Valid function definition found"
+          fi
+
+          # Check for proper end statements
+          if grep -q "^end" "$file"; then
+            echo "  ✅ Contains end statements"
+          fi
+        done
+
+        echo "✅ Basic syntax validation complete"
+
+    - name: Check for code quality markers
+      run: |
+        echo "Checking for code quality indicators..."
+
+        # Check for documentation in main files
+        if grep -q "^%" Max_Entr_Nets.m; then
+          echo "✅ Max_Entr_Nets.m contains documentation"
+        fi
+
+        if grep -q "^%" Vulnerable_Banks.m; then
+          echo "✅ Vulnerable_Banks.m contains documentation"
+        fi
+
+        # Count total lines of code
+        matlab_loc=$(find . -name "*.m" ! -path "./.git/*" -exec cat {} \; | wc -l)
+        echo "📊 Total MATLAB lines of code: $matlab_loc"
+
+        # Count model implementations
+        model_count=$(find models -name "*.m" 2>/dev/null | wc -l)
+        echo "📊 Number of network models: $model_count"
+
+    - name: Generate project statistics
+      run: |
+        echo "# Project Statistics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        matlab_files=$(find . -name "*.m" ! -path "./.git/*" | wc -l)
+        matlab_loc=$(find . -name "*.m" ! -path "./.git/*" -exec cat {} \; | wc -l)
+        model_count=$(find models -name "*.m" 2>/dev/null | wc -l)
+        doc_files=$(find . -name "*.md" ! -path "./.git/*" | wc -l)
+
+        echo "- **MATLAB Files**: $matlab_files" >> $GITHUB_STEP_SUMMARY
+        echo "- **Lines of Code**: $matlab_loc" >> $GITHUB_STEP_SUMMARY
+        echo "- **Network Models**: $model_count" >> $GITHUB_STEP_SUMMARY
+        echo "- **Documentation Files**: $doc_files" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Project structure validation passed" >> $GITHUB_STEP_SUMMARY

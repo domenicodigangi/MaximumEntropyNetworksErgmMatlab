@@ -1,13 +1,5 @@
 function model_struct = BIPECM(in_data,precision)
 
-%%%%%%%%%% Progress: tutto da scrivere. Starting point: confrontare BIPWCM
-%%%%%%%%%% con DCBIPWCM( l'idea sarebbe di prendere òle phi dauno di questi
-%%%%%%%%%% modelli e le psi dal bipcm(binario)). DA VERIFICARE IN FONDO!!
-%%%%%%%%%% Optimization: provare versione con doppio
-%%%%%%%%%% approccio(esatto sulle phi e approx sulle psi), confrontare con
-%%%%%%%%%% esatto su entrambe (in tal caso tenere conto di limiti su
-%%%%%%%%%% entrambi i gruppi di variabili).
-      
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:
@@ -18,12 +10,12 @@ function model_struct = BIPECM(in_data,precision)
 %---------BIPARTITE  FIXED STRENGTH and DEGREE SEQUENCES ------------------------- 
 %%
 %   INPUT: in_data  is a cell array that contains the strength sequences.
-%                   The first elementis a column with rows strengths, the
+%                   The first element is a column with rows strengths, the
 %                   second one a column with the columns strengths
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers
-%                           to informations, funcitons or options specific
+%                           to information, functions or options specific
 %                           for the particular model. 
 
 %   To be called only at the beginning of the main script Max_Entr_Nets

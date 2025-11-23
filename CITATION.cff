@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the related paper."
+type: software
+title: "Maximum Entropy Network Reconstruction for ERGM"
+abstract: "MATLAB implementation of maximum entropy network reconstruction methods for exponential random graph models, with application to systemic risk assessment in financial networks."
+authors:
+  - family-names: "Di Gangi"
+    given-names: "Domenico"
+    email: domenico.digangi@sns.it
+    affiliation: "Scuola Normale Superiore di Pisa"
+repository-code: "https://github.com/domenicodigangi/MaximumEntropyNetworksErgmMatlab"
+keywords:
+  - maximum entropy
+  - network reconstruction
+  - ERGM
+  - systemic risk
+  - financial networks
+  - fire sales
+  - MATLAB
+license: MIT
+preferred-citation:
+  type: article
+  title: "Assessing systemic risk due to fire sales spillover through maximum entropy network reconstruction"
+  authors:
+    - family-names: "Di Gangi"
+      given-names: "Domenico"
+    - family-names: "Lillo"
+      given-names: "Fabrizio"
+    - family-names: "Pirino"
+      given-names: "Davide"
+  journal: "Journal of Economic Dynamics and Control"
+  volume: 94
+  start: 301
+  end: 319
+  year: 2018
+  doi: "10.1016/j.jedc.2018.07.001"
+  url: "https://www.sciencedirect.com/science/article/pii/S0165188918301787"

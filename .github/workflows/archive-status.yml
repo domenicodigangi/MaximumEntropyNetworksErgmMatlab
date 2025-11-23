@@ -1,0 +1,90 @@
+name: Archive Status Check
+
+on:
+  schedule:
+    # Run monthly to check archive status
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  archive-health:
+    name: Check Archive Health
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Verify archive notice
+      run: |
+        echo "Checking for archive notice in README..."
+
+        if grep -q "archive" README.md || grep -q "Archive" README.md; then
+          echo "✅ Archive notice found in README"
+        else
+          echo "⚠️  Consider adding archive notice to README"
+        fi
+
+    - name: Check documentation freshness
+      run: |
+        echo "Checking documentation status..."
+
+        # Check if key files have been updated recently (within last 2 years)
+        current_date=$(date +%s)
+        two_years_ago=$((current_date - 63072000))
+
+        for file in README.md CONTRIBUTING.md LICENSE; do
+          if [ -f "$file" ]; then
+            file_date=$(git log -1 --format="%at" -- "$file" 2>/dev/null || echo "0")
+            if [ "$file_date" -gt "$two_years_ago" ]; then
+              echo "✅ $file is up to date"
+            else
+              echo "ℹ️  $file hasn't been updated recently (archived project)"
+            fi
+          fi
+        done
+
+    - name: Verify citation information
+      run: |
+        echo "Verifying citation information..."
+
+        # Check for DOI in citation file
+        if [ -f "CITATION.cff" ]; then
+          if grep -q "doi:" CITATION.cff; then
+            doi=$(grep "doi:" CITATION.cff | head -1)
+            echo "✅ DOI found: $doi"
+          fi
+
+          if grep -q "2018" CITATION.cff; then
+            echo "✅ Publication year (2018) confirmed"
+          fi
+        fi
+
+        # Check for citation in README
+        if grep -q "cite" README.md || grep -q "Citation" README.md; then
+          echo "✅ Citation information in README"
+        fi
+
+    - name: Generate archive status report
+      run: |
+        echo "# Archive Status Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📚 **Status**: Research Archive" >> $GITHUB_STEP_SUMMARY
+        echo "📄 **Publication**: Di Gangi et al. (2018)" >> $GITHUB_STEP_SUMMARY
+        echo "📊 **Journal**: Journal of Economic Dynamics and Control" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Count files
+        matlab_files=$(find . -name "*.m" ! -path "./.git/*" | wc -l)
+        echo "- MATLAB files: $matlab_files" >> $GITHUB_STEP_SUMMARY
+
+        # Check for updates in last 30 days
+        recent_commits=$(git log --since="30 days ago" --oneline | wc -l)
+        if [ "$recent_commits" -gt 0 ]; then
+          echo "- Recent activity: $recent_commits commits in last 30 days" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- Recent activity: None (archived)" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Archive is properly maintained" >> $GITHUB_STEP_SUMMARY

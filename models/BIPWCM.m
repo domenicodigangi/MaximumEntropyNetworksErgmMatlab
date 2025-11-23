@@ -1,12 +1,5 @@
 function model_struct = BIPWCM(in_data,precision)
 
-%%%%%% Progress: Funziona bene. Resta da capire come scala su reti molto
-%%%%%% grandi e se è possibile migliorare la scalabilità con miglioramento
-%%%%%% dei bounds o addirittura cambiamento dell algoritmo in favore di uno
-%%%%%% che utilizzi le derivate(che noi possiamo calcolare analiticamente).
-%%%%%% Un cambio in WCM porterebbe miglioramenti a cascata in tutti gli
-%%%%%% altri modelli.
-      
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:
@@ -17,12 +10,12 @@ function model_struct = BIPWCM(in_data,precision)
 %---------------BIPARTITE FIXED STRENGTH SEQUENCES------------------------- 
 %%
 %   INPUT: in_data  is a cell array that contains the strength sequences.
-%                   The first elementis a column with rows strengths, the
+%                   The first element is a column with rows strengths, the
 %                   second one a column with the columns strengths
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers
-%                           to informations, funcitons or options specific
+%                           to information, functions or options specific
 %                           for the particular model. 
 
 %   To be called only at the beginning of the main script Max_Entr_Nets

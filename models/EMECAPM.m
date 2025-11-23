@@ -1,9 +1,4 @@
 function model_struct =  EMECAPM(in_data,precision)
-%%%%%%%%%% Progress: Funziona bene.Sampling
-%%%%%%%%%% implementato, da chiarire la lentezza della convergenza sui
-%%%%%%%%%% vincoli dalle media campionarie
-
-
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:
@@ -13,14 +8,14 @@ function model_struct =  EMECAPM(in_data,precision)
 %--------------------------------------------------------------------
 %-----BIPARTITE FIXED DEGREE SEQUENCES AND CAPM EXPECTED WEIGHTS------------------ 
 %%
-%   INPUT: in_data  is a cell array that contains the strength sequences, and desity.
-%                   The first elementis a column with rows strengths, the
+%   INPUT: in_data  is a cell array that contains the strength sequences, and density.
+%                   The first element is a column with rows strengths, the
 %                   second one a column with the columns strengths, the
-%                   third is the network desity
+%                   third is the network density
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers
-%                           to informations, funcitons or options specific
+%                           to information, functions or options specific
 %                           for the particular model. 
 
 %   To be called only at the beginning of the main script Max_Entr_Nets
@@ -166,7 +161,7 @@ model_struct.opt.par_store = z_start;
         fun_den = @(x,y)((x*y').*X_c - (x*y') +  sqrt( ((x*y').^2).* (X_c -1).^2 + 4*X_c.*(x*y')  )  ); 
         %Expected binary matrix from a psi gamma and X_c
        % fun_exp_bin = @(x,y)( (x*y')./(1-x*y') .* (2*X_c./fun_den(x,y) -1) ); 
-        %phi parameter as funciton of psi gamma and X_c
+        %phi parameter as function of psi gamma and X_c
         fun_phi = @(x,y)( (2*X_c - fun_den(x,y))./(2*X_c .*(1 -(x*y') ))   );
          
         % import the starting point
