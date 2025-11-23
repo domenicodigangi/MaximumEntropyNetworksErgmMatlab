@@ -3,6 +3,8 @@
 [![MATLAB](https://img.shields.io/badge/MATLAB-R2014a+-orange.svg)](https://www.mathworks.com/products/matlab.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Research](https://img.shields.io/badge/Research-Published-blue.svg)](https://www.sciencedirect.com/science/article/pii/S0165188918301787)
+[![Documentation](https://github.com/domenicodigangi/MaximumEntropyNetworksErgmMatlab/actions/workflows/documentation.yml/badge.svg)](https://github.com/domenicodigangi/MaximumEntropyNetworksErgmMatlab/actions/workflows/documentation.yml)
+[![MATLAB Validation](https://github.com/domenicodigangi/MaximumEntropyNetworksErgmMatlab/actions/workflows/matlab-validation.yml/badge.svg)](https://github.com/domenicodigangi/MaximumEntropyNetworksErgmMatlab/actions/workflows/matlab-validation.yml)
 
 > **Note**: This repository contains code developed during my Master's thesis research. It is maintained as an archive of published academic work and is no longer actively developed.
 

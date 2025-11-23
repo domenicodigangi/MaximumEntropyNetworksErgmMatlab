@@ -1,0 +1,125 @@
+name: Project Statistics
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  generate-stats:
+    name: Generate Project Stats
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for accurate stats
+
+    - name: Calculate project statistics
+      id: stats
+      run: |
+        echo "Calculating project statistics..."
+
+        # MATLAB code statistics
+        matlab_files=$(find . -name "*.m" ! -path "./.git/*" | wc -l)
+        matlab_loc=$(find . -name "*.m" ! -path "./.git/*" -exec cat {} \; | wc -l)
+        matlab_comments=$(find . -name "*.m" ! -path "./.git/*" -exec grep -c "^%" {} \; | awk '{s+=$1} END {print s}')
+
+        # Model statistics
+        model_count=$(find models -name "*.m" 2>/dev/null | wc -l)
+
+        # Documentation statistics
+        doc_files=$(find . -name "*.md" ! -path "./.git/*" | wc -l)
+        doc_lines=$(find . -name "*.md" ! -path "./.git/*" -exec cat {} \; | wc -l)
+
+        # Repository statistics
+        total_commits=$(git rev-list --count HEAD)
+        first_commit=$(git log --reverse --format="%ai" | head -1 | cut -d' ' -f1)
+        last_commit=$(git log -1 --format="%ai" | cut -d' ' -f1)
+
+        # Calculate documentation ratio
+        if [ "$matlab_loc" -gt 0 ]; then
+          doc_ratio=$(echo "scale=1; ($matlab_comments * 100) / $matlab_loc" | bc)
+        else
+          doc_ratio=0
+        fi
+
+        # Export for summary
+        echo "matlab_files=$matlab_files" >> $GITHUB_OUTPUT
+        echo "matlab_loc=$matlab_loc" >> $GITHUB_OUTPUT
+        echo "matlab_comments=$matlab_comments" >> $GITHUB_OUTPUT
+        echo "model_count=$model_count" >> $GITHUB_OUTPUT
+        echo "doc_ratio=$doc_ratio" >> $GITHUB_OUTPUT
+        echo "total_commits=$total_commits" >> $GITHUB_OUTPUT
+
+        # Generate summary
+        echo "# 📊 Project Statistics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        echo "## Code Metrics" >> $GITHUB_STEP_SUMMARY
+        echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| MATLAB Files | $matlab_files |" >> $GITHUB_STEP_SUMMARY
+        echo "| Lines of Code | $matlab_loc |" >> $GITHUB_STEP_SUMMARY
+        echo "| Comment Lines | $matlab_comments |" >> $GITHUB_STEP_SUMMARY
+        echo "| Documentation Ratio | ${doc_ratio}% |" >> $GITHUB_STEP_SUMMARY
+        echo "| Network Models | $model_count |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        echo "## Documentation" >> $GITHUB_STEP_SUMMARY
+        echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Markdown Files | $doc_files |" >> $GITHUB_STEP_SUMMARY
+        echo "| Documentation Lines | $doc_lines |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        echo "## Repository" >> $GITHUB_STEP_SUMMARY
+        echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Total Commits | $total_commits |" >> $GITHUB_STEP_SUMMARY
+        echo "| First Commit | $first_commit |" >> $GITHUB_STEP_SUMMARY
+        echo "| Last Update | $last_commit |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+    - name: Analyze model implementations
+      run: |
+        echo "## 🔬 Model Implementations" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Model | Description |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|-------------|" >> $GITHUB_STEP_SUMMARY
+
+        if [ -d "models" ]; then
+          for model_file in models/*.m; do
+            if [ -f "$model_file" ]; then
+              model_name=$(basename "$model_file" .m)
+              # Extract description from file header
+              description=$(grep -A 3 "^%.*$model_name" "$model_file" | grep -v "^%%" | head -1 | sed 's/^%//' | sed 's/^[ \t]*//')
+              if [ -z "$description" ]; then
+                description="Network ensemble model"
+              fi
+              echo "| \`$model_name\` | $description |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+    - name: Check research impact
+      run: |
+        echo "## 📚 Research Publication" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        if grep -q "Journal of Economic Dynamics and Control" README.md; then
+          echo "✅ **Published**: Journal of Economic Dynamics and Control (2018)" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        if [ -f "CITATION.cff" ]; then
+          if grep -q "doi:" CITATION.cff; then
+            doi=$(grep "doi:" CITATION.cff | awk '{print $2}' | tr -d '"')
+            echo "✅ **DOI**: [$doi](https://doi.org/$doi)" >> $GITHUB_STEP_SUMMARY
+          fi
+        fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "*Statistics generated on $(date +'%Y-%m-%d %H:%M:%S UTC')*" >> $GITHUB_STEP_SUMMARY

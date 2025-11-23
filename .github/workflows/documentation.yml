@@ -1,0 +1,73 @@
+name: Documentation Quality
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate-docs:
+    name: Validate Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check Markdown formatting
+      uses: DavidAnson/markdownlint-action@v1
+      with:
+        config: .markdownlint.json
+        globs: '*.md'
+      continue-on-error: true
+
+    - name: Validate links in documentation
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        use-quiet-mode: 'yes'
+        config-file: '.markdown-link-check.json'
+      continue-on-error: true
+
+    - name: Check README exists and has required sections
+      run: |
+        echo "Checking README.md structure..."
+        if [ ! -f README.md ]; then
+          echo "❌ README.md not found"
+          exit 1
+        fi
+
+        required_sections=("Overview" "Installation" "Usage" "License" "Citation")
+        for section in "${required_sections[@]}"; do
+          if grep -q "## $section" README.md; then
+            echo "✅ Found section: $section"
+          else
+            echo "⚠️  Missing section: $section"
+          fi
+        done
+
+    - name: Validate CITATION.cff
+      uses: citation-file-format/cffconvert-github-action@2.0.0
+      with:
+        args: "--validate"
+
+    - name: Check for required files
+      run: |
+        echo "Checking for required project files..."
+        required_files=("README.md" "LICENSE" "CITATION.cff" "CONTRIBUTING.md" ".gitignore")
+        all_found=true
+
+        for file in "${required_files[@]}"; do
+          if [ -f "$file" ]; then
+            echo "✅ Found: $file"
+          else
+            echo "❌ Missing: $file"
+            all_found=false
+          fi
+        done
+
+        if [ "$all_found" = false ]; then
+          echo "⚠️  Some required files are missing"
+        else
+          echo "✅ All required files present"
+        fi
