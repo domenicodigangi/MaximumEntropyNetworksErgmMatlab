@@ -206,6 +206,18 @@ Email: domenico.digangi@sns.it
 
 Developed as part of Master's thesis research at Scuola Normale Superiore.
 
+## Contributing
+
+This is archived research code, but contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Bug fixes and documentation improvements
+- Compatibility updates
+- Performance optimizations
+- How to report issues
+
+## Citation
+
+If you use this code in your research, please cite the original paper. A `CITATION.cff` file is provided for easy citation management with tools like Zotero, Mendeley, and GitHub.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

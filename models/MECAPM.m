@@ -10,7 +10,7 @@ function model_struct = MECAPM(in_data,precision)
 %-------BIPARTITE FIXED STRENGTH SEQUENCE + CAPM EXPECTED MATRIX--------------
 %
 %   INPUT: in_data  is a cell array that contains the strength sequences.
-%                   The first elementis a column with rows strengths, the
+%                   The first element is a column with rows strengths, the
 %                   second one a column with the columns strengths
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields

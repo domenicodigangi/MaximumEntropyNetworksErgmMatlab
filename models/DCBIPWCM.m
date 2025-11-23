@@ -1,9 +1,5 @@
 function model_struct = DCBIPWCM(in_data,precision)
 
-%%%%%%%%%% Progress: funziona bene. Rimane da capire l'effettiva efficienza
-%%%%%%%%%% dello starting point utilizzato
-
-      
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:

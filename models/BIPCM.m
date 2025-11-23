@@ -1,7 +1,5 @@
-function model_struct =  BIPCM(in_data,precision)      
-%%%%%%%%%% Progress: funzionante. si potrebbe migliorare scegliendo
-%%%%%%%%%% starting  point in modo piu' sensato .
-      
+function model_struct =  BIPCM(in_data,precision)
+
 %   This function contains all the functions, optimization options, and
 %   description of the input data, required to estimate and sample 
 %   the network ensemble known as:
@@ -11,9 +9,9 @@ function model_struct =  BIPCM(in_data,precision)
 %--------------------------------------------------------------------
 %---------------BIPARTITE FIXED  DEGREE SEQUENCES------------------------- 
 %%
-%   INPUT: in_data  is a cell array that contains the strength sequences.
-%                   The first elementis a column with rows strengths, the
-%                   second one a column with the columns strengths
+%   INPUT: in_data  is a cell array that contains the degree sequences.
+%                   The first element is a column with rows degrees, the
+%                   second one a column with the columns degrees
 %           
 %   OUTPUT: model_struct    is a structure with a number of fields 
 %                           described in the following. Each field refers

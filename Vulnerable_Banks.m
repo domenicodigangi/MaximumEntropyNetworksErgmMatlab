@@ -49,7 +49,7 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 %                                       partial information
 %           mode = 'ESTIMATE-BIP***'->  Substituting *** with the name of a
 %                                       model available, i.e.
-%                                       'ESTIMATE-BIPWCM' returnns the
+%                                       'ESTIMATE-BIPWCM' returns the
 %                                       estimates based on the
 %                                       corresponding network ensemble. The
 %                                       input_data needs to be exactly that
@@ -87,7 +87,7 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 %                       banks dynamics described in [1]. If not provided a
 %                       uniform
 %                       shock of 0.01 is assumed, i.e. a 1% depreciation
-%                       of al the assets present in the system.
+%                       of all the assets present in the system.
 %
 %       liq-->          The vector of illiquidities associated to each
 %                       asset. If not provided the first asset is assumed
