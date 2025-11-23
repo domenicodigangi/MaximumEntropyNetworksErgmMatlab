@@ -99,10 +99,19 @@
 
 %%
 
-    % add the needed folders to matlab path 
+    % Input validation
+    if ~ischar(model) && ~isstring(model)
+        error('Max_Entr_Nets:InvalidInput', 'Model name must be a string or char array');
+    end
+
+    if ~iscell(in_data)
+        error('Max_Entr_Nets:InvalidInput', 'in_data must be a cell array');
+    end
+
+    % add the needed folders to matlab path
     tmp_path = mfilename('fullpath');
     addpath(genpath(tmp_path(1,1:end-13)));
-    
+
     %The user can ask for a list of the models available
     if strcmpi(model,'LIST-BIP') % list all bipartite models
        ls([tmp_path(1,1:end-13), 'models/BIP*'])
@@ -112,26 +121,50 @@
         ls([tmp_path(1,1:end-13), 'models/*M.m'])
         Out_MENE = [];
         return
-        
+
     end
         
 
 
-% The required minimum relative precision for the constraints can be set 
+% The required minimum relative precision for the constraints can be set
 if nargin >=3
      precision = varargin{1};
+     % Validate precision parameter
+     if ~isnumeric(precision) || ~isscalar(precision) || precision <= 0 || precision >= 1
+         error('Max_Entr_Nets:InvalidPrecision', ...
+               'Precision must be a scalar numeric value between 0 and 1');
+     end
 else
     precision = 10^(-2);
 end
 %  prec fixes the required precision, i.e. the maximum value of the expected
 %  relative error  for each constraint
-%  e.g. 
+%  e.g.
 %  prec == 10^(-3); (the expected error over the ensembles is less than 0.001 for each constraint)
 %     
 
 
 %Select model among those available
-eval(['max_ent_model = ' upper(model) '(in_data,precision);'])
+% Security: Use whitelist approach instead of eval() to prevent code injection
+model_upper = upper(model);
+
+% Whitelist of valid models
+valid_models = {'BIPCM', 'BIPECM', 'BIPWCM', 'DCBIPWCM', 'DCMECAPM', 'EMECAPM', 'MECAPM'};
+
+% Validate model name
+if ~ismember(model_upper, valid_models)
+    error('Max_Entr_Nets:InvalidModel', ...
+          'Invalid model name: %s. Valid models are: %s', ...
+          model, strjoin(valid_models, ', '));
+end
+
+% Safely call the model function using feval
+try
+    max_ent_model = feval(model_upper, in_data, precision);
+catch ME
+    error('Max_Entr_Nets:ModelError', ...
+          'Failed to initialize model %s: %s', model_upper, ME.message);
+end
 
 %%  Estimate the Model 
 % Look for a maximum of the appropriate log-likelihood function.

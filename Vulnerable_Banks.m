@@ -122,7 +122,21 @@ function [AV,SYS,VUL] = Vulnerable_Banks(mode,input_data,equity,shock,varargin).
 
 %%
 
-        
+% Input validation
+if ~ischar(mode) && ~isstring(mode)
+    error('Vulnerable_Banks:InvalidInput', 'Mode must be a string or char array');
+end
+
+% Validate equity vector
+if ~isnumeric(equity) || ~isvector(equity) || any(equity < 0)
+    error('Vulnerable_Banks:InvalidInput', 'Equity must be a numeric vector with non-negative values');
+end
+
+% Validate shock vector
+if ~isnumeric(shock) || ~isvector(shock) || any(shock < 0) || any(shock > 1)
+    error('Vulnerable_Banks:InvalidInput', 'Shock must be a numeric vector with values between 0 and 1');
+end
+
 if strcmpi(mode,'REAL')
     % Vulnerable banks when the network is available
         
@@ -357,7 +371,7 @@ elseif strcmpi(mode(1:8),'ESTIMATE')
        %toc
         for i = 1:n_sample
            X_i = model_sample{i} ;
-            [AV_tmp,SYS_tmp,VUL_tmp] = Vulnerable_Banks_duarte('REAL',X_i,equity,shock,liq,sizes);
+            [AV_tmp,SYS_tmp,VUL_tmp] = Vulnerable_Banks('REAL',X_i,equity,shock,liq,sizes);
             AV_sample(i) = AV_tmp;
             SYS_sample(:,i) = SYS_tmp;
             VUL_sample(:,i) = VUL_tmp;      
